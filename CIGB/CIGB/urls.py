@@ -21,7 +21,7 @@ from .views import services_view, colection_view, main_view, about_view, contact
 urlpatterns = [
     path('servicios/', services_view),
     path('coleccion/', colection_view),
-    path('principal/', main_view),
+    path('', main_view),
     path('sobre_mi/', about_view),
     path('contactos/', contacts_view),
     path('login/', login_view),
