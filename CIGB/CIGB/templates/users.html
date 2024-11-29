@@ -1,0 +1,214 @@
+{% extends "CIGB.html" %}
+{% block add_button %}
+  <input class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:border-blue-500 dark:text-gray-400 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800" type="button" value="Agregar Usuario" onclick="openForm(accion='Agregar', objetivo='Cuenta',  NaN, new_url='{{ BASE_URL }}/add_account')" class="boton">
+{% endblock %}
+{% block contenido %}
+<div>
+  <div class="table-container">
+    <table class="table table-success table-striped" style="margin-bottom: 0px;">
+        <thead>
+            <tr>
+                <th>Opciones</th>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Cargo</th>
+                <th>Tipo.Us</th>
+                <th>Usuario</th>
+                <th>Productos</th>
+            </tr>
+        </thead>
+        <tbody id="main_table">
+          {% for user in user_data %}
+          <tr>
+              <td class="opciones">
+                <div>
+                  <button type="button" class="table-button btn-outline-danger" onclick="eliminar('Usuario','{{ user.id }}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                      </button>
+                  <button valores="nombre·{{ user.nombre }}|apellidos·{{ user.apellidos }}|email·{{ user.email }}|cargo·{{ user.cargo }}|tipo·{{ user.tipo }}|usuario·{{ user.usuario }}|producto·{{ user.id_producto }}" onclick="openForm(accion='Modificar', objetivo='{{ user.usuario }}',fila=this, new_url='{{ BASE_URL }}/mod_user')" type="button" class="table-button btn-outline-warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                    </svg>
+                      </button>
+                  </div>
+              </td>
+              <td>{{ user.id }}</td>
+              <td>{{ user.nombre }}</td>
+              <td>{{ user.apellidos }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.cargo }}</td>
+              <td>{{ user.tipo }}</td>
+              <td>{{ user.usuario }}</td>
+              <td id='{{user.id_producto}}'>{{ user.producto }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+</div>
+</div>
+
+<script>
+    document.getElementById('users').classList.add('selected')
+</script>
+{% endblock %}
+
+{% block form %}
+<div id="form">
+  <div id="border">
+  <div>
+      <h1><span id="accion">Crear</span> <span id="objetivo">Cuenta</span></h1>
+  </div>
+  <div class="main-form-container">
+      <div class="form-container">
+        <form action="add_account/" id="formulario">
+          {% csrf_token %}
+          <div class="form-section">
+              <div>
+                  <input placeholder="" id="nombre" name="nombre" type="text" maxlength="20">
+                  <label for="nombre">Nombre <span>*</span></label>
+              </div>
+              <div>
+                  <input placeholder="" id="apellidos" name="apellidos" type="text" required   maxlength="30">
+                  <label for="apellidos">Apellidos <span>*</span></label>
+              </div>
+          </div>
+          <div class="form-section">
+              <div>
+                  <input placeholder="" id="email" name="email" type="text" required>
+                  <label for="email">Email <span>*</span></label>
+              </div>
+              <div>
+                  <select placeholder="" name="user_type" id="tipo">
+                      <option value="user">Usuario</option>
+                      <option value="admin">Administrador</option>
+                  </select>
+                  <label for="tipo">Tipo de usuario</label>
+              </div>
+          </div>
+          <div class="form-section">
+              <div>
+                  <select name="producto" id="producto" disabled>
+                      {% for product in product_data %}
+                          <option value="{{ product.id }}">{{ product.nombre }}</option>
+                      {% endfor %}
+                  </select>
+                  <label for="producto">Producto</label>
+              </div>
+              <div>
+                  <input placeholder="" id="cargo" name="cargo" type="text" required>
+                  <label for="cargo">Cargo</label>
+              </div>
+          </div>
+          <div class="form-section">
+              <div>
+                  <input placeholder="" id="usuario" name="usuario" type="text" required>
+                  <label for="usuario">Usuario <span>*</span></label>
+              </div>
+              <div>
+                  <div class="checkbox-container">
+                    <input id="show-password" type="checkbox" checked="checked">
+                    <svg class="eye" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"></path></svg>
+                    <svg class="eye-slash" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z"></path></svg>
+                  </div>
+                  <input placeholder="" id="contraseña" name="contraseña" type="password" minlength="8"
+                  title="Entre un texto de al menos 8 carecteres con mayúsculas, miúsculas y números" required>
+                  <label for="contraseña">Contrasña <span>*</span></label>
+              </div>
+              <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  const showPasswordCheckbox = document.getElementById('show-password');
+                  const passwordInput = document.querySelector('input[name="contraseña"]');
+
+                  showPasswordCheckbox.addEventListener('change', function() {
+                      if (this.checked) {
+                          passwordInput.type = 'password';
+                      } else {
+                          passwordInput.type = 'text';
+                      }
+                  });
+
+                  // Initial state check
+                  if (!showPasswordCheckbox.checked) {
+                      passwordInput.type = 'text';
+                  }
+              });
+              </script>
+          </div>
+          <div id="form-buttons" class="form-section">
+              <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" id="form_button" type="submit" value="Usuario" class="boton">
+              <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" type="button" value="Cancelar" class="boton" onclick="openForm(accion='Cancelar')">
+          </div>
+      </form>
+      </div>
+  </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('formulario');
+    
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var data = new FormData(this);
+      if(this.action.includes('/add_account')){
+        fetch('/add_account/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+          method: 'POST',
+          body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }else if(this.action.includes('/mod_user')){
+        data.append('target_user', document.getElementById('objetivo').textContent)
+        fetch('/mod_user/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+        method: 'POST',
+        body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+    });
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    const userTypeSelect = document.getElementById('tipo');
+    const productSelect = document.getElementById('producto');
+
+    userTypeSelect.addEventListener('change', function() {
+        if (this.value === 'admin') {
+            productSelect.disabled = true;
+        } else {
+            productSelect.disabled = false;
+        }
+    });
+
+    // Inicializa el estado según el valor inicial del select de tipo de usuario
+    if (userTypeSelect.value === 'admin') {
+        productSelect.disabled = true;
+    } else {
+        productSelect.disabled = false;
+    }
+  });
+</script>
+{% endblock %}

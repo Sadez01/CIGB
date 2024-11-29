@@ -1,0 +1,155 @@
+{% extends "CIGB.html" %}
+{% block add_button %}
+  <input class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:border-blue-500 dark:text-gray-400 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800" type="button" value="Agregar Formulación" onclick="openForm(accion='Agregar', objetivo='Formulación',  NaN, new_url='{{ BASE_URL }}/add_formulacion')" class="boton">
+{% endblock %}
+{% block contenido %}
+<div>
+  <div class="table-container">
+    <table class="table table-success table-striped" style="margin-bottom: 0px;">
+        <thead>
+            <tr>
+                <th>Opciones</th>
+                <th>Id</th>
+                <th>Lote</th>
+                <th>Producto</th>
+                <th>Usuario</th>
+                <th>Val.Teorico</th>
+                <th>Fecha.Fab</th>
+                <th>Fecha.Ven</th>
+                <th>Consumo.IFA.UT</th>
+                <th>Frascos.Esperados</th>
+        </thead>
+        <tbody id="main_table">
+          {% for orden in ordenFormulacion_data %}
+          <tr>
+              <td class="opciones">
+                <div>
+                  <button type="button" class="table-button btn-outline-danger" onclick="eliminar('Formulacion','{{ orden.id_ordern_formulacion }}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                      </button>
+                  <button valores="form_ifa·{{ orden.id_IFA.id_IFA }}|vol_teorico·{{ orden.vol_teorico }}|fecha_vence·{{ orden.fecha_vence|date:'YYYY-mm-dd' }}|consumo_IFA_UT·{{ orden.consumo_IFA_UT }}|frascos_esperados·{{ orden.frascos_esperados }}|nombre·{{ orden.nombre }}" onclick="openForm(accion='Modificar', objetivo='{{ orden.nombre }}',fila=this, new_url='{{ BASE_URL }}/mod_formulacion')" type="button" class="table-button btn-outline-warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                    </svg>
+                      </button>
+                  </div>
+              </td>
+              <td>{{ orden.nombre }}</td>
+              <td>{{ orden.id_IFA.lote }}</td>
+              <td>{{ orden.id_IFA.id_producto.nombre }}</td>
+              <td>{{ orden.id_usuario.usuario }}</td>
+              <td>{{ orden.vol_teorico }}</td>
+              <td>{{ orden.fecha_fab|date:"d/m/Y" }}</td>
+              <td>{{ orden.fecha_vence|date:"d/m/Y" }}</td>
+              <td>{{ orden.consumo_IFA_UT }}</td>
+              <td>{{ orden.frascos_esperados }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+</div>
+</div>
+
+<script>
+    document.getElementById('formulacion').classList.add('selected')
+</script>
+{% endblock %}
+
+{% block form %}
+<div id="form">
+  <div id="border">
+  <div>
+      <h1><span id="accion">Crear</span> <span id="objetivo">Cuenta</span></h1>
+  </div>
+  <div class="main-form-container">
+      <div class="form-container">
+          <form action="add_formulacion/" id="formulario">
+            {% csrf_token %}
+                <div class="form-section">
+                    <div>
+                        <select name="IFA" id="form_ifa">
+                            {% for IFA in IFA_data %}
+                            <option value="{{ IFA.id_IFA }}">{{ IFA.lote }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="form-ifa"><span>IFA</span></label>
+                    </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" id="vol_teorico" type="text" name="vol_teorico">
+                    <label for="vol_teorico"><span>Volumen Teórico</span></label>
+                </div>
+                    <div>
+                        <input placeholder="" id="fecha_vence" type="date" name="fecha_vence">
+                        <label for="fecha_vence"><span>Fecha de Vence</span></label>
+                    </div>
+                </div>
+                <div class="form-section">  
+                  <div>
+                      <input placeholder="" id="consumo_IFA_UT" name="consumo_IFA_UT" type="text">
+                      <label for="consumo_IFA_UT"><span>Consumo IFA UT</span></label>
+                  </div>
+                    <div>
+                        <input placeholder="" id="frascos_esperados" name="frascos_esperados" type="text">
+                        <label for="frascos_esperados"><span>Frascos Esperados</span></label>
+                    </div>
+              </div>
+              <div class="form-section">
+                  <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" id="form_button" type="submit" value="Usuario" class="boton">
+                  <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" type="button" value="Cancelar" class="boton" onclick="openForm(accion='Cancelar')">
+              </div>
+              <input id="nombre" name="nombre" type="text" class="form_hidden_input">
+          </form>
+      </div>
+  </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('formulario');
+    
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var data = new FormData(this);
+      if(this.action.includes('/add_formulacion')){
+        fetch('/add_formulacion/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+          method: 'POST',
+          body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }else if(this.action.includes('/mod_formulacion')){
+        data.append('target_orden', document.getElementById('objetivo').textContent)
+        fetch('/mod_formulacion/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+        method: 'POST',
+        body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+    });
+  });
+</script>
+{% endblock %}

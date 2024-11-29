@@ -1,0 +1,194 @@
+{% extends "CIGB.html" %}
+{% block add_button %}
+  <input class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:border-blue-500 dark:text-gray-400 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800" type="button" value="Agregar Orden" onclick="openForm(accion='Agregar', objetivo='Orden',  NaN, new_url='{{ BASE_URL }}/add_orden_envase')" class="boton">
+{% endblock %}
+{% block contenido %}
+<div>
+  <div class="table-container">
+    <table class="table table-success table-striped" style="margin-bottom: 0px;">
+        <thead>
+            <tr>
+                <th>Opciones</th>
+                <th>Id</th>
+                <th>Lote.Envase</th>
+                <th>Producto</th>
+                <th>Usuario</th>
+                <th>Producto de</th>
+                <th>Fecha.Fab</th>
+                <th>Fecha.Ven</th>
+                <th>Destino</th>
+                <th>Cant.Env</th>
+                <th>Observaciones</th>
+                <th>Cliente</th>
+                <th>Material</th>
+                <th>C.Impreción</th>
+                <th>C.Referencia</th>
+        </thead>
+        <tbody id="main_table">
+          {% for orden in ordenEnvase_data %}
+          <tr>
+              <td class="opciones">
+                <div>
+                  <button type="button" class="table-button btn-outline-danger" onclick="eliminar('Orden_Llenado','{{ orden.id_ordern_llenado }}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                      </button>
+                  <button valores="form_ifa·{{ orden.id_IFA.id_IFA }}|tipo_producto·{{ orden.tipo_producto }}|concentracion·{{ orden.concentracion }}|actividad_biologica·{{ orden.actividad_biologica }}|densidad·{{ orden.densidad }}|envase_primario·{{ orden.envase_primario }}|volumen_teorico·{{ orden.volumen_teorico }}|volumen·{{ orden.volumen }}|observaciones·{{ orden.observaciones }}|cliente·{{ orden.cliente }}|material·{{ orden.material }}|c_referencia·{{ orden.c_referencia }}|nombre·{{ orden.nombre }}" onclick="openForm(accion='Modificar', objetivo='{{ orden.id_orden_envase }}',fila=this, new_url='{{ BASE_URL }}/mod_orden_envase')" type="button" class="table-button btn-outline-warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                    </svg>
+                      </button>
+                  </div>
+              </td>
+              <td>{{ orden.id_orden_envase }}</td>
+              <td>{{ orden.id_envase.nombre }}</td>
+              <td>{{ orden.id_envase.id_orden_llenado.id_orden_formulacion.id_IFA.id_producto.nombre }}</td>
+              <td>{{ orden.id_usuario.usuario }}</td>
+              <td>{{ orden.tipo_producto }}</td>
+              <td>{{ orden.fecha_fabricacion|date:"d/m/Y" }}</td>
+              <td>{{ orden.fecha_vence|date:"d/m/Y" }}</td>
+              <td>{{ orden.destino }}</td>
+              <td>{{ orden.cantidad_envasar }}</td>
+              <td>{{ orden.observaciones }}</td>
+              <td>{{ orden.cliente }}</td>
+              <td>{{ orden.material }}</td>
+              <td>{{ orden.c_impresion }}</td>
+              <td>{{ orden.c_referencia }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+</div>
+</div>
+
+<script>
+    document.getElementById('sub-menu').classList.add('keep-open')
+    document.getElementById('orden_envase').classList.add('selected')
+</script>
+{% endblock %}
+
+{% block form %}
+<div id="form">
+  <div id="border">
+     <div>
+        <h1 class="text-white text-2xl"><span id="accion">Crear</span> <span id="objetivo">Cuenta</span></h1>
+     </div>
+         <form action="add_orden_envase/" id="formulario">
+            {% csrf_token %}
+                <div class="form-section">
+                    <div>
+                        <select name="id_envase" id="id_envase">
+                            {% for envase in envase_data %}
+                            <option value="{{ envase.id_orden_envase }}">{{ envase.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="id_envase"><span>Lote de Envase</span></label>
+                    </div>
+                    <div>
+                        <select name="tipo_producto" id="tipo_producto">
+                            <option value="Continuación">Continuación</option>
+                        </select>
+                        <label for="tipo_producto"><span>Producto de</span></label>
+                    </div>
+              </div>
+              <div class="form-section">
+                    <div>
+                        <input placeholder="" id="fecha_fabricacion" type="date" name="fecha_fabricacion">
+                        <label for="fecha_fabricacion"><span>Fecha de Fabricación</span></label>
+                    </div>
+                    <div>
+                        <input placeholder="" id="fecha_vence" type="date" name="fecha_vence">
+                        <label for="fecha_vence"><span>Fecha de Vencimiento</span></label>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div>
+                        <input placeholder="" id="destino" type="text" name="destino">
+                        <label for="destino"><span>Destino</span></label>
+                    </div>
+                    <div>
+                        <input placeholder="" id="cantidad_envasar" name="cantidad_envasar" type="text">
+                        <label for="cantidad_envasar"><span>Contidad a Envasar</span></label>
+                    </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" id="observaciones" name="observaciones" type="text">
+                    <label for="observaciones"><span>Observaciones</span></label>
+                </div>
+              </div>
+                <div class="form-section">
+                    <div>
+                        <input placeholder="" id="cliente" name="cliente" type="text">
+                        <label for="cliente"><span>Cliente</span></label>
+                    </div>
+                    <div>
+                        <input placeholder="" id="material" name="material" type="text">
+                        <label for="material"><span>Material</span></label>
+                    </div>
+              </div>
+                <div class="form-section">
+                    <div>
+                        <input placeholder="" id="c_impresion" name="c_impresion" type="text">
+                        <label for="c_impresion"><span>C.Impreción</span></label>
+                    </div>
+                    <div>
+                        <input placeholder="" id="c_referencia" name="c_referencia" type="text">
+                        <label for="c_referencia"><span>C.Referencia</span></label>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" id="form_button" type="submit" value="Usuario">
+                    <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" type="button" value="Cancelar" onclick="openForm(accion='Cancelar')">
+                </div>
+              <input id="nombre" name="nombre" type="text" class="form_hidden_input">
+          </form>
+      </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('formulario');
+    
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var data = new FormData(this);
+      if(this.action.includes('/add_orden_envase')){
+        fetch('/add_orden_envase/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+          method: 'POST',
+          body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }else if(this.action.includes('/mod_orden_envase')){
+        data.append('target_orden', document.getElementById('objetivo').textContent)
+        fetch('/mod_orden_envase/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+        method: 'POST',
+        body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+    });
+  });
+</script>
+{% endblock %}

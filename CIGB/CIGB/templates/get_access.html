@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-gb" dir="ltr" class='com_content view-category layout-theme3497category itemid-101 home j39 mm-hover'>
+    <head>
+        <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"><base href="{{ BASE_URL }}/" />
+          <link rel="stylesheet" href="static/css/main.css">
+          <title>Obtener acceso</title>
+    </head>
+    <body>
+        <div>
+            <div style="justify-items: center;">
+                <h1>Obtenga acceso a CIGB</h1>
+            </div>
+            <div class="main-form-container">
+                <div class="form-container">
+                    <form action="add_account/">
+                        <div class="form-section">
+                            <div>
+                                <p><span>Nombre</span><span>*</span></p>
+                                <input type="text">
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div>
+                                <p><span>CI</span><span>*</span></p>
+                                <input type="text">
+                            </div>
+                            <div>
+                                <p><span>Clave de acceso</span><span>*</span></p>
+                                <input type="text">
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div>
+                                <p><span>Dirección</span></p>
+                                <input type="text">
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div>
+                                <p><span>Email</span></p>
+                                <input type="text">
+                            </div>
+                            <div>
+                                <p><span>Teléfono</span></p>
+                                <input type="text">
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div>
+                                <p><span>Usuario</span><span>*</span></p>
+                                <input type="text">
+                            </div>
+                            <div>
+                                <p><span>Contrasña</span><span>*</span></p>
+                                <input type="text">
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div>
+                                <p><span>Imagen</span><span>*</span></p>
+                                <div name="image-selector">
+                                    <input type="file" id="image-input" accept="image/*" value="Seleccionar imagen">
+                                    <br>
+                                    <img id="preview-image" src="" alt="">
+                                </div>
+                                
+                                <script>
+                                document.getElementById('image-input').addEventListener('change', function(e) {
+                                    var file = e.target.files[0];
+                                    
+                                    if (file) {                  
+                                        var reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            document.getElementById('preview-image').src = e.target.result;
+                                        }
+                                        reader.readAsDataURL(file);
+                                    }
+                                });
+                                </script>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <input type="submit" value="Obtener Acceso" class="btn">
+                            <a href="principal/" class="btn">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

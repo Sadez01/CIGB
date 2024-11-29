@@ -1,0 +1,192 @@
+{% extends "CIGB.html" %}
+{% block add_button %}
+  <input class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:border-blue-500 dark:text-gray-400 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800" type="button" value="Agregar IFA" onclick="openForm(accion='Agregar', objetivo='IFA', NaN, new_url='{{ BASE_URL }}/add_IFA')" class="boton">
+{% endblock %}
+{% block contenido %}
+<div>
+  <div class="table-container">
+    <table class="table table-success table-striped" style="margin-bottom: 0px;">
+        <thead>
+            <tr>
+                <th>Opciones</th>
+                <th>Lote</th>
+                <th>Fecha/Fabricación</th>
+                <th>Producto</th>
+                <th>Usuario</th>
+                <th>Volumen</th>
+                <th>Act.Biológica</th>
+                <th>Act.Espectral</th>
+                <th>Prot.Total</th>
+                <th>Act.Total.UT</th>
+                <th>Existencia.UT</th>
+                <th>Existencia.Vol.IFA</th>
+                <th>Vol.Form.Líquido</th>
+                <th>Dosis Esperadas</th>
+        </thead>
+        <tbody id="main_table">
+          {% for IFA in IFA_data %}
+          <tr>
+              <td class="opciones">
+                <div>
+                  <button type="button" class="table-button btn-outline-danger" onclick="eliminar('IFA','{{ IFA.id_IFA }}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                      </button>
+                  <button valores="lote·{{ IFA.lote }}|producto·{{ IFA.id_producto.id_producto }}|usuario·{{ IFA.id_usuario.nombre }}|volumen·{{ IFA.volumen }}|act_biologica·{{ IFA.act_biologica }}|act_espectral·{{ IFA.act_espectral }}|prot_total·{{ IFA.prot_total }}|act_total_UT·{{ IFA.act_total_UT }}|existencia_UT·{{ IFA.existencia_UT }}|existencia_vol_IFA·{{ IFA.existencia_vol_IFA }}|vol_form_liquido·{{ IFA.vol_form_liquido }}|dosis_esperadas·{{ IFA.dosis_esperadas }}" onclick="openForm(accion='Modificar', objetivo='{{ IFA.lote }}',fila=this, new_url='{{ BASE_URL }}/mod_IFA')" type="button" class="table-button btn-outline-warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                    </svg>
+                      </button>
+                  </div>
+              </td>
+              <td>{{ IFA.lote }}</td>
+              <td>{{ IFA.fecha_fabricacion|date:"d/m/Y" }}</td>
+              <td>{{ IFA.id_producto.nombre }}</td>
+              <td>{{ IFA.id_usuario.usuario }}</td>
+              <td>{{ IFA.volumen }}</td>
+              <td>{{ IFA.act_biologica }}</td>
+              <td>{{ IFA.act_espectral }}</td>
+              <td>{{ IFA.prot_total }}</td>
+              <td>{{ IFA.act_total_UT }}</td>
+              <td>{{ IFA.existencia_UT }}</td>
+              <td>{{ IFA.existencia_vol_IFA }}</td>
+              <td>{{ IFA.vol_form_liquido }}</td>
+              <td>{{ IFA.dosis_esperadas }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+</div>
+</div>
+
+<script>
+    document.getElementById('IFA').classList.add('selected')
+</script>
+{% endblock %}
+
+{% block form %}
+<div id="form">
+  <div id="border">
+  <div>
+      <h1><span id="accion">Crear</span> <span id="objetivo">Cuenta</span></h1>
+  </div>
+  <div class="main-form-container">
+      <div class="form-container">
+          <form action="add_IFA/" id="formulario">
+            {% csrf_token %}
+              <div class="form-section">
+                  <div>
+                      <input placeholder="" id="lote" name="lote" type="text">
+                      <label for="lote"><span>Lote</span></label>
+                  </div>
+              </div>
+              <div class="form-section">
+                <div>
+                  <select name="producto" id="producto">
+                      {% for product in product_data %}
+                        <option value="{{ product.id_producto }}">{{ product.nombre }}</option>
+                      {% endfor %}
+                  </select>
+                  <label for="producto"><span>Producto</span></label>
+              </div>
+                  <div>
+                      <input placeholder="" id="volumen" type="text" name="volumen">
+                      <label for="volumen"><span>Volumen</span></label>
+                  </div>
+              </div>
+              <div class="form-section">
+                <div>
+                  <input placeholder="" id="act_biologica" type="text" name="act_biologica">
+                  <label for="act_biologica"><span>Actividad biológica</span></label>
+              </div>
+                <div>
+                  <input placeholder="" id="act_espectral" name="act_espectral" type="text">
+                  <label for="act_espectral" ><span>Actividad espectral</span></label>
+                </div>
+              </div>
+              <div class="form-section">
+                <div>
+                  <input placeholder="" id="prot_total" name="prot_total" type="text">
+                  <label for="prot_total" ><span>Prot.Total</span></label>
+                </div>
+                  <div>
+                      <input placeholder="" id="act_total_UT" name="act_total_UT" type="text">
+                      <label for="act_total_UT"><span>Actividad total UT</span></label>
+                  </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" id="existencia_UT" name="existencia_UT" type="text">
+                    <label for="existencia_UT"><span>Existencia UT</span></label>
+                </div>
+                  <div>
+                      <input placeholder="" id="existencia_vol_IFA" name="existencia_vol_IFA" type="text">
+                      <label for="existencia_vol_IFA"><span>Existencia Vol.IFA</span></label>
+                  </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" id="vol_form_liquido" name="vol_form_liquido" type="text">
+                    <label for="vol_form_liquido"><span>Vol.Form Líquido</span></label>
+                </div>
+                  <div>
+                      <input placeholder="" id="dosis_esperadas" name="dosis_esperadas" type="text">
+                      <label for="dosis_esperadas" ><span>Dosis Esperadas</span></label>
+                  </div>
+              </div>
+              <div class="form-section">
+                  <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" id="form_button" type="submit" value="Usuario" class="boton">
+                  <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" type="button" value="Cancelar" class="boton" onclick="openForm(accion='Cancelar')">
+              </div>
+          </form>
+      </div>
+  </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('formulario');
+    
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var data = new FormData(this);
+      if(this.action.includes('/add_IFA')){
+        fetch('/add_IFA/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+          method: 'POST',
+          body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }else if(this.action.includes('/mod_IFA')){
+        data.append('target_IFA', document.getElementById('objetivo').textContent)
+        fetch('/mod_IFA/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+        method: 'POST',
+        body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+    });
+  });
+</script>
+{% endblock %}

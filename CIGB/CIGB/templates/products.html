@@ -1,0 +1,220 @@
+{% extends "CIGB.html" %}
+{% block add_button %}
+  <input class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:border-blue-500 dark:text-gray-400 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800" type="button" value="Agregar Producto" onclick="openForm(accion='Agregar', objetivo='Producto', NaN, new_url='{{ BASE_URL }}/add_product')" class="boton">
+{% endblock %}
+{% block contenido %}
+<div>
+    <div class="table-container">
+      <table class="table table-success table-striped" style="margin-bottom: 0px;">
+          <thead>
+              <tr>
+                  <th>Opciones</th>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Resina</th>
+                  <th>Resina 2</th>
+                  <th>Tapa</th>
+                  <th>Tapa 2</th>
+                  <th>EDTA</th>
+                  <th>Tween 80</th>
+                  <th>B ciclodextrina</th>
+                  <th>CMC</th>
+                  <th>Tiomersal</th>
+                  <th>NaCL</th>
+                  <th>NaH2PO4.2H2O</th>
+                  <th>NaH2PO4</th>
+                  <th>Etiqueta</th>
+                  <th>Estuche</th>
+              </tr>
+          </thead>
+          <tbody id="main_table">
+            {% for product in data %}
+            <tr>
+                <td class="opciones">
+                  <div>
+                    <button type="button" class="table-button btn-outline-danger" onclick="eliminar('Producto','{{ product.id }}')">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                      </svg>
+                        </button>
+                    <button valores="id·{{ product.id }}|nombre·{{ product.nombre }}|resina1·{{ product.resina1 }}|resina2·{{ product.resina2 }}|tapa1·{{ product.tapa1 }}|tapa2·{{ product.tapa2 }}|edta·{{ product.edta }}|tween80·{{ product.tween80 }}|b_ciclodextrina·{{ product.b_ciclodextrina }}|CMC·{{ product.CMC }}|tiomersal·{{ product.tiomersal }}|NaCL·{{ product.NaCL }}|NaH2PO4_2H2O·{{ product.NaH2PO4_2H2O }}|NaH2PO4·{{ product.NaH2PO4 }}|etiqueta·{{ product.etiqueta }}|estuche·{{ product.estuche }}" onclick="openForm(accion='Modificar', objetivo='{{ product.nombre }}',fila=this, new_url='{{ BASE_URL }}/mod_product')" type="button" class="table-button btn-outline-warning">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                      </svg>
+                        </button>
+                    </div>
+                </td>
+                <td>{{ product.id }}</td>
+                <td>{{ product.nombre }}</td>
+                <td>{{ product.resina1 }}</td>
+                <td>{{ product.resina2 }}</td>
+                <td>{{ product.tapa1 }}</td>
+                <td>{{ product.tapa2 }}</td>
+                <td>{{ product.edta }}</td>
+                <td>{{ product.tween80 }}</td>
+                <td>{{ product.b_ciclodextrina }}</td>
+                <td>{{ product.CMC }}</td>
+                <td>{{ product.tiomersal }}</td>
+                <td>{{ product.NaCL }}</td>
+                <td>{{ product.NaH2PO4_2H2O }}</td>
+                <td>{{ product.NaH2PO4 }}</td>
+                <td>{{ product.etiqueta }}</td>
+                <td>{{ product.estuche }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+
+<script>
+    document.getElementById('products').classList.add('selected')
+</script>
+{% endblock %}
+
+{% block form %}
+<div id="form">
+  <div id="border">
+  <div>
+      <h1><span id="accion">Crear</span> <span id="objetivo">Productos</span></h1>
+  </div>
+  <div class="main-form-container">
+      <div class="form-container">
+          <form action="add_product/" id="formulario">
+            {% csrf_token %}
+              <div class="form-section">
+                  <div>
+                      <input placeholder="" name="nombre" id="nombre" type="text">
+                      <label for="nombre"><span>Nombre</span><span>*</span></label>
+                  </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <label><span>Materiales</span></label>
+                </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" name="resina1" id="resina1" type="text">
+                    <label for="resina1"><span>Resina 1</span></label>
+                </div>
+                <div>
+                    <input placeholder="" name="resina2" id="resina2" type="text">
+                    <label for="resina2"><span>Resina 2</span></label>
+                </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" name="tapa1" id="tapa1" type="text">
+                    <label for="tapa1"><span>Tapa 1</span></label>
+                </div>
+                <div>
+                    <input placeholder="" name="tapa2" id="tapa2" type="text">
+                    <label for="tapa2"><span>Tapa 2</span></label>
+                </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" name="edta" id="edta" type="text">
+                    <label for="edta"><span>EDTA</span></label>
+                </div>
+                <div>
+                    <input placeholder="" name="tween80" id="tween80" type="text">
+                    <label for="tween80"><span>Tween 80</span></label>
+                </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" name="b_ciclodextrina" id="b_ciclodextrina" type="text">
+                    <label for="b_ciclodextrina"><span>B ciclodextrina</span></label>
+                </div>
+                <div>
+                    <input placeholder="" name="CMC" id="CMC" type="text">
+                    <label for="CMC"><span>CMC</span></label>
+                </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" name="tiomersal" id="tiomersal" type="text">
+                    <label for="tiomersal"><span>Tiomersal</span></label>
+                </div>
+                <div>
+                    <input placeholder="" name="NaCL" id="NaCL" type="text">
+                    <label for="NaCL"><span>NaCL</span></label>
+                </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" name="NaH2PO4_2H2O" id="NaH2PO4_2H2O" type="text">
+                    <label for="NaH2PO4_2H2O"><span>NaH2PO4.2H2O</span></label>
+                </div>
+                <div>
+                    <input placeholder="" name="NaH2PO4" id="NaH2PO4" type="text">
+                    <label for="NaH2PO4"><span>NaH2PO4</span></label>
+                </div>
+              </div>
+              <div class="form-section">
+                <div>
+                    <input placeholder="" name="etiqueta" id="etiqueta" type="text">
+                    <label for="etiqueta"><span>Etiqueta</span></label>
+                </div>
+                <div>
+                    <input placeholder="" name="estuche" id="estuche" type="text">
+                    <label for="estuche"><span>Estuche</span></label>
+                </div>
+              </div>
+              <div id="form-buttons" class="form-section">
+                  <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" id="form_button" type="submit" value="Crear Producto" class="boton">
+                  <input class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200" type="button" value="Cancelar" class="boton" onclick="openForm(accion='Cancelar')">
+              </div>
+          </form>
+      </div>
+  </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('formulario');
+    
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var data = new FormData(this);
+      if(this.action.includes('/add_product')){
+        fetch('/add_product/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+          method: 'POST',
+          body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }else if(this.action.includes('/mod_product')){
+        data.append('target_product', document.getElementById('objetivo').textContent)
+        fetch('/mod_product/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+        method: 'POST',
+        body: data,})
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(data.message);
+            window.location.reload();
+          } else {
+            alert(data.message);  // Muestra un mensaje de error
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% load compress %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en-gb" dir="ltr" class='com_content view-category layout-theme3497category itemid-101 home j39 mm-hover'>
+    <head>
+        <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"><base href="{{ BASE_URL }}/" />
+          <link rel="stylesheet" href="static/css/main.css">
+          {% compress css %}
+            <link rel="stylesheet" href="{% static 'src/output.css' %}">
+          {% endcompress %}
+          <title>Iniciar Sesión</title>
+    </head>
+    <body>
+      <div class="main-container">
+        <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+          <div style="justify-items: center;">
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Inicie Sesión</h5>
+          </div>
+          <div class="main-form-container">
+            <div class="form-container">
+              <form action="autenticar/" id="formulario">
+                {% csrf_token %}
+                <div>
+                  <div class="relative z-0 w-full mb-5 group">
+                    <input type="text" name="user" id="floating_first_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                    <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Usuario</label>
+                  </div>
+                  <div class="relative z-0 w-full mb-5 group">
+                    <input type="password" name="password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                    <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Contraseña</label>
+                  </div>
+                  <div class="flex items-start mb-5">
+                    <div class="flex items-center h-5">
+                      <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"/>
+                    </div>
+                    <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Recuerdame</label>
+                  </div>
+                </div>
+                <div>
+                  <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Iniciar Sesión</button>
+                  <a href="principal/" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cancelar</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const form = document.getElementById('formulario');
+              
+              form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                console.log('hasta aqui todo bien');
+                var data = new FormData(this);
+                fetch('autenticar/', {  // Asegúrate de que esta URL coincida con la ruta definida en urls.py
+                  method: 'POST',
+                  body: data,})
+                .then(response => response.json())
+                .then(data => {
+                  if (data.status === 'success') {
+                    alert(data.message);
+                    window.location.href = '/CIGB/';
+                  } else {
+                    alert(data.message);  // Muestra un mensaje de error
+                  }
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+              });
+            });
+        </script>
+    </body>
+</html>
